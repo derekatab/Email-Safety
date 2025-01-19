@@ -1,7 +1,7 @@
 'use client';
 
 import { db } from '../../../firebase/clientApp';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query } from 'firebase/firestore';
 
 import React, { useState } from 'react';
 
@@ -28,11 +28,44 @@ async function addDataToFireStore(name, email, message) {
     }
 }
 
+// **New Function to Fetch Data
+async function fetchDataFromFirestore() {
+    try {
+        const q = query(collection(db, "messages"));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Error fetching data from Firestore", error);
+        return [];
+    }
+}
+
+
+
 export default function Home() {
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+
+    // **New State to Store User data for the table
+    const [users, setUsers] = useState([]);
+
+    //** Fetch data on component mount
+
+    useEffect(() => {
+
+        const loadData = async () => {
+
+            const data = await fetchDataFromFirestore();
+            setUsers(data);
+        }
+        loadData();
+
+    }, []
+
+
+    );
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,9 +75,10 @@ export default function Home() {
             setEmail("");
             setMessage("");
 
-            alert("Data added to firestore database")
+            alert("Data added to Firestore database");
         }
     };
+
 
 
     return (
@@ -55,7 +89,6 @@ export default function Home() {
 
             <form onSubmit={handleSubmit} className='max-w-md mx-auto p-4 bg-white shadow-md'>
                 <div className='mb-4'>
-
                     <label htmlFor='name' className='block text-gray-700 font-bold mb-2'>
                         Name:
                     </label>
@@ -63,7 +96,7 @@ export default function Home() {
                     <input
                         type='text'
                         id='name'
-                        className='w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'
+                        className='w-full px-3 py-2 borner rounded lg focus:outline-none focus:border-blue-500'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
@@ -79,7 +112,7 @@ export default function Home() {
                     <input
                         type='text'
                         id='email'
-                        className='w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'
+                        className='w-full px-3 py-2 borner rounded lg focus:outline-none focus:border-blue-500'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -96,7 +129,7 @@ export default function Home() {
                         rows={5}
                         type='message'
                         id='message'
-                        className='w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'
+                        className='w-full px-3 py-2 borner rounded lg focus:outline-none focus:border-blue-500'
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     >
@@ -108,13 +141,42 @@ export default function Home() {
                 <div className='text-center'>
                     <button
                         type='submit'
-                        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg'
+                        className='bg-blue-500 gover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg'
                     >
                         Submit
                     </button>
                 </div>
 
             </form>
+
+
+            //**Table to Display User Data
+
+
+            <div className="mt-10 w-full">
+                <h2 className="text-3xl font-bold mb-4">Submitted Users</h2>
+                <table className="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="border border-gray-300 px-4 py-2">Name</th>
+                            <th className="border border-gray-300 px-4 py-2">Email</th>
+                            <th className="border border-gray-300 px-4 py-2">Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* **Dynamically render user data in the table** */}
+                        {users.map((user) => (
+                            <tr key={user.id} className="text-center">
+                                <td className="border border-gray-300 px-4 py-2">{user.name}</td>
+                                <td className="border border-gray-300 px-4 py-2">{user.email}</td>
+                                <td className="border border-gray-300 px-4 py-2">{user.message}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+
         </main>
     )
 }
