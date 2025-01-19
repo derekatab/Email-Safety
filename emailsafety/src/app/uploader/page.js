@@ -110,11 +110,9 @@ const UploadPage = () => {
   };
 
   const handleRedirect = () => {
-    const selectedMessagesArray = Array.from(selectedMessages);
-    router.push({
-      pathname: '/generate',
-      query: { messages: selectedMessagesArray },
-    });
+    const selectedMessagesArray = Array.from(selectedMessages).map((index) => showAll ? allData[index] : csvData[index]);
+    localStorage.setItem('selectedMessages', JSON.stringify(selectedMessagesArray));
+    router.push('/generate');
   };
 
   if (loading) {
