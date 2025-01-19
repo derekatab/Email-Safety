@@ -14,6 +14,7 @@ const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [csvData, setCsvData] = useState([]);
   const [allData, setAllData] = useState([]);
+  const [selectedMessages, setSelectedMessages] = useState(new Set());
   const [showAll, setShowAll] = useState(false); // Toggle
   const router = useRouter();
 
@@ -87,6 +88,34 @@ const UploadPage = () => {
     setShowAll(!showAll);
   };
 
+  const handleCheckboxChange = (index) => {
+    setSelectedMessages((prev) => {
+      const newSelectedMessages = new Set(prev);
+      if (newSelectedMessages.has(index)) {
+        newSelectedMessages.delete(index);
+      } else {
+        newSelectedMessages.add(index);
+      }
+      return newSelectedMessages;
+    });
+  };
+
+  const handleCheckAll = (checked) => {
+    if (checked) {
+      const newSelectedMessages = new Set(csvData.map((_, index) => index));
+      setSelectedMessages(newSelectedMessages);
+    } else {
+      setSelectedMessages(new Set());
+    }
+  };
+
+  const handleRedirect = () => {
+    const selectedMessagesArray = Array.from(selectedMessages);
+    router.push({
+      pathname: '/generate',
+      query: { messages: selectedMessagesArray },
+    });
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -95,7 +124,7 @@ const UploadPage = () => {
   const handleSignOut = async () => {
     await signOut(auth);
     router.push('/auth');
-  }
+  };
 
   return (
     <div>
@@ -112,7 +141,12 @@ const UploadPage = () => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Message</th>
+                <th>Select</th>
+                <th>
+                  <input type="checkbox" onChange={(e) => handleCheckAll(e.target.checked)}
+                    checked={selectedMessages.size === csvData.length} />{" "}
+                  Select All
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -121,6 +155,13 @@ const UploadPage = () => {
                   <td>{row[0]}</td>
                   <td>{row[1]}</td>
                   <td>{row[2]}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={() => handleCheckboxChange(index)}
+                      checked={selectedMessages.has(index)}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -142,7 +183,7 @@ const UploadPage = () => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Message</th>
+                <th>Select</th>
               </tr>
             </thead>
             <tbody>
@@ -151,6 +192,13 @@ const UploadPage = () => {
                   <td>{row.name}</td>
                   <td>{row.email}</td>
                   <td>{row.message}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={() => handleCheckboxChange(index)}
+                      checked={selectedMessages.has(index)}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -160,6 +208,7 @@ const UploadPage = () => {
         )}
       </div>
 
+      <button onClick={handleRedirect}>Generate Email Test</button>
       <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
