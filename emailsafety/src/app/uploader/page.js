@@ -13,6 +13,8 @@ const UploadPage = () => {
   const [loading, setLoading] = useState(true);
   const [file, setFile] = useState(null);
   const [csvData, setCsvData] = useState([]);
+  const [allData, setAllData] = useState([]);
+  const [showAll, setShowAll] = useState(false); // Toggle
   const router = useRouter();
 
   useEffect(() => {
@@ -68,6 +70,24 @@ const UploadPage = () => {
     }
   }
 
+  const fetchAllData = async () => {
+    try {
+      const querySnapshot = await getDocs(query(collection(db, "messages"))); // Get all documents from Firestore
+      const allRows = querySnapshot.docs.map((doc) => doc.data());
+      setAllData(allRows);
+    } catch (error) {
+      console.error("Error fetching documents from Firestore database", error);
+    }
+  };
+
+  const toggleView = () => {
+    if (!showAll) {
+      fetchAllData();
+    }
+    setShowAll(!showAll);
+  };
+
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -109,6 +129,37 @@ const UploadPage = () => {
           <p>No data to display</p>
         )}
       </div>
+
+      {/* Toggle Button */}
+      <button onClick={toggleView}>{showAll ? 'Hide All Data' : 'Show All Data'}</button>
+
+
+      <h2>{showAll ? "All Data in Database" : "Uploaded CSV Data"}</h2>
+      <div>
+        {showAll ? (
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allData.map((row, index) => (
+                <tr key={index}>
+                  <td>{row.name}</td>
+                  <td>{row.email}</td>
+                  <td>{row.message}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No data to display</p>
+        )}
+      </div>
+
       <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
