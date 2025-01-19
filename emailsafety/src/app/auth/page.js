@@ -11,13 +11,13 @@ function SignInScreen() {
     useEffect(() => {
         const firebaseui = require('firebaseui');
         const uiConfig = {
-            signInSuccessUrl: '/',
+            signInSuccessUrl: '/dashboard',
             signInOptions: [
                 EmailAuthProvider.PROVIDER_ID,
                 GithubAuthProvider.PROVIDER_ID,
             ],
         };
-        const ui = new firebaseui.auth.AuthUI(auth);
+        const ui = !firebaseui.auth.AuthUI.getInstance() ? new firebaseui.auth.AuthUI(auth) : firebaseui.auth.AuthUI.getInstance();
         ui.start('#firebaseui-auth-container', uiConfig);
     }
         , []);

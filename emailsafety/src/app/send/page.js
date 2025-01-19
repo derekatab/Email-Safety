@@ -25,9 +25,6 @@ export default function Dashboard() {
         return () => unsubscribe();
     }, [router]);
 
-    const viewTests = async () => {
-        router.push('/send');
-    }
     const handleSignOut = async () => {
         await signOut(auth);
         router.push('/auth');
@@ -39,9 +36,8 @@ export default function Dashboard() {
 
     return (
         <div>
-            <h1>Welcome to the Dashboard</h1>
+            <h1>Your Tests</h1>
             <p>Welcome back, {user.displayName || 'User'}!</p>
-            <button onClick={viewTests}>View Tests</button><br></br>
             <button onClick={handleSignOut}>Sign Out</button>
         </div>
     );
