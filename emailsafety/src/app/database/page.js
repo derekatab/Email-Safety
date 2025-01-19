@@ -63,7 +63,7 @@ export default function Home() {
                     <input
                         type='text'
                         id='name'
-                        className='w-full px-3 py-2 borner rounded lg focus:outline-none focus:border-blue-500'
+                        className='w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
@@ -79,7 +79,7 @@ export default function Home() {
                     <input
                         type='text'
                         id='email'
-                        className='w-full px-3 py-2 borner rounded lg focus:outline-none focus:border-blue-500'
+                        className='w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -96,7 +96,7 @@ export default function Home() {
                         rows={5}
                         type='message'
                         id='message'
-                        className='w-full px-3 py-2 borner rounded lg focus:outline-none focus:border-blue-500'
+                        className='w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     >
@@ -108,7 +108,7 @@ export default function Home() {
                 <div className='text-center'>
                     <button
                         type='submit'
-                        className='bg-blue-500 gover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg'
+                        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg'
                     >
                         Submit
                     </button>
