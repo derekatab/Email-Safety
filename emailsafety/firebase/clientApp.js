@@ -21,4 +21,4 @@ const auth = getAuth(firebase);
 console.log('Firebase Auth was successfully init.');
 
 
-export { firebase, auth, db };
+export { firebase, auth, db, };
