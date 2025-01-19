@@ -1,5 +1,5 @@
 'use client';
-
+// import run from '../api/generateEmail'         //test purposes
 import { useEffect } from 'react';
 import 'firebaseui/dist/firebaseui.css';
 import { GithubAuthProvider, EmailAuthProvider } from 'firebase/auth';
@@ -24,6 +24,7 @@ function SignInScreen() {
     return (
         <div>
             <h1>Sign In</h1>
+            {/* <p>{run()}</p> */}  
             <div id="firebaseui-auth-container"></div>
         </div>
     );
