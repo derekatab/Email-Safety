@@ -8,29 +8,48 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <header>
-        <title>Employee Ready Email Based Phishing Protection</title>
-        <h1 className="text-4xl font-bold">Employee Ready Email Based Phishing Protection</h1>
-      </header>
-      <main className="text-center">
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold">How it Works</h2>
-          <p className="mt-4 text-lg">
-            Our solution provides comprehensive protection against email-based phishing attacks by analyzing incoming emails and identifying potential threats. Employees are trained to recognize phishing attempts and report suspicious emails.
-          </p>
-        </section>
+    <div className="min-h-screen bg-white flex flex-col">
+      <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex items-center space-x-4">
+          <div className="w-8 h-8">
+          <Image
+  src="/assets/logo (1) (1) 1.png"
+  alt="GP Logo"
+  width={32}
+  height={32}
+  className="object-contain"
+/>
+
+          </div>
+          <span className="text-xl italic font-serif">gone phishing</span>
+        </div>
         <button
-          className="px-6 py-2 mt-4 text-white bg-blue-600 rounded hover:bg-blue-700"
           onClick={handleSignInClick}
+          className="px-4 py-1 text-sm hover:bg-gray-100 rounded transition-colors"
         >
-          Sign In
+          LOGIN
         </button>
-      </main>
-      <footer className="text-center">
-        <p>Made for NWHacks 2025! 🚀</p>
-      </footer>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center relative px-4">
+        {/* Background wave pattern - you'll need to add your SVG here */}
+        <div className="absolute inset-0 z-0 opacity-20">
+          {/* Add your wave pattern SVG here */}
+        </div>
+
+        <div className="z-10 text-center space-y-8 max-w-2xl">
+          <h1 className="text-xl mb-8">
+            Protect your company from spam phishing emails
+          </h1>
+          
+          <button
+            onClick={handleSignInClick}
+            className="bg-blue-100 hover:bg-blue-200 px-8 py-3 rounded-md text-black font-medium transition-colors"
+          >
+            GO PHISH!
+          </button>
+        </div>
+      </div>
     </div>
   );
-
 }
