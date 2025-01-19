@@ -16,8 +16,9 @@ const clientCredentials = {
 
 const firebase = !getApps().length ? initializeApp(clientCredentials) : getApps()[0];
 
+const db = getFirestore(firebase);
 const auth = getAuth(firebase);
 console.log('Firebase Auth was successfully init.');
 
 
-export { firebase, auth };
+export { firebase, auth, db };
